@@ -10,13 +10,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
-    <a href="{{ route('products.index') }}">
-        <span class="icon-holder">
-            <i class="anticon anticon-appstore"></i>
-        </span>
-        <span class="title">Product</span>
-    </a>
-</li>
+                            <a href="{{ route('users.index') }}">
+                                <span class="icon-holder">
+                                    <i class="anticon anticon-appstore"></i>
+                                </span>
+                                <span class="title">User</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('products.index') }}">
+                                <span class="icon-holder">
+                                    <i class="anticon anticon-appstore"></i>
+                                </span>
+                                <span class="title">Product</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
