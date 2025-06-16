@@ -12,7 +12,7 @@
                 <th>STT</th>
                 <th>Tên</th>
                 <th>Email</th>
-                <!-- <th>Role</th> -->
+                <th>Role</th>
                 <th>Ngày tạo</th>
                 <th>Hành động</th>
             </tr>
@@ -23,7 +23,7 @@
             <td>{{ $index + 1 }}</td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
-            <!-- <td>{{ $user->stock }}</td> -->
+            <td>{{ ucfirst($user->role->value) }}</td>
             <td>{{ $user->created_at->format('d/m/Y') }}</td>
             <td>
                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Sửa</a>
