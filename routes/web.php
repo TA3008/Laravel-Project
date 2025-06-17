@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 
@@ -12,17 +13,34 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// User
-Route::middleware(['auth'])->group(function () {
-    Route::get('/', fn() => view('Home'));
 
-    Route::middleware(['role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+     Route::get('/', fn() => redirect()->route('posts.index'));
+
+    // User
+    Route::middleware(['admin'])->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/edit/{id?}', [UserController::class, 'edit'])->name('users.edit');
         Route::match(['post', 'put'], '/users/save/{id?}', [UserController::class, 'save'])->name('users.save');
         Route::delete('/users/{id}', [UserController::class, 'delete'])->name('users.delete');
     });
+
+    // Post
+        // Tất cả roles đều được xem danh sách bài viết
+        Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+        Route::get('/posts/{slug}', [PostController::class, 'detail'])->name('posts.detail');
+
+        
+            Route::get('/posts/edit/{id?}', [PostController::class, 'edit'])->name('posts.edit');
+            Route::match(['post', 'put'], '/posts/save/{id?}', [PostController::class, 'save'])->name('posts.save');
+
+        // Chỉ admin được xoá bài viết
+        Route::middleware(['admin'])->group(function () {
+            Route::delete('/posts/{id}', [PostController::class, 'delete'])->name('posts.delete');
+        });
 });
+
+
 
 // Product
 Route::get('/products/edit/{id?}', [ProductController::class, 'edit'])->name('products.edit');

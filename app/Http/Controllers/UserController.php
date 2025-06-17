@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Role;
+
+use App\Enums\RoleEnum;
 use App\Models\User;
 use App\Http\Controllers;
 use Illuminate\Http\Request;
@@ -25,14 +26,21 @@ class UserController extends Controller
 public function save(Request $request, $id)
 {
     $request->validate([
-        'role' => ['required', Rule::in(array_column(Role::cases(), 'value'))],
+        'role' => ['required', Rule::in(array_column(RoleEnum::cases(), 'value'))],
     ]);
 
     $user = User::findOrFail($id);
-    $user->role = Role::from($request->role); 
+    $user->role = RoleEnum::from($request->role); 
     $user->save();
 
     return redirect()->route('users.index')->with('success', 'Cập nhật quyền thành công.');
 }
 
+public function delete($id)
+{
+    $user = User::findOrFail($id);
+    $user->delete();
+
+    return redirect()->route('users.index')->with('success', 'Xóa người dùng thành công.');
+}
 }

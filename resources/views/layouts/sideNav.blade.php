@@ -18,13 +18,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('posts.index') }}">
+                                <span class="icon-holder">
+                                    <i class="anticon anticon-appstore"></i>
+                                </span>
+                                <span class="title">Post</span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a href="{{ route('products.index') }}">
                                 <span class="icon-holder">
                                     <i class="anticon anticon-appstore"></i>
                                 </span>
                                 <span class="title">Product</span>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>

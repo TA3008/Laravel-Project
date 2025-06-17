@@ -11,7 +11,7 @@
         <div class="form-group">
             <label for="role">Chọn quyền:</label>
             <select name="role" class="form-control">
-                @foreach (\App\Role::cases() as $role)
+                @foreach (\App\Enums\RoleEnum::cases() as $role)
                     <option value="{{ $role->value }}" {{ $user->role === $role ? 'selected' : '' }}>
                         {{ ucfirst($role->value) }}
                     </option>
