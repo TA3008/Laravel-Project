@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\Posts\Edit;
+use App\Livewire\Posts\Detail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
@@ -27,12 +29,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Post
         // Tất cả roles đều được xem danh sách bài viết
-        Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-        Route::get('/posts/{slug}', [PostController::class, 'detail'])->name('posts.detail');
-
+        Route::get('/posts', fn () => view('posts.index'))->name('posts.index');
         
-            Route::get('/posts/edit/{id?}', [PostController::class, 'edit'])->name('posts.edit');
-            Route::match(['post', 'put'], '/posts/save/{id?}', [PostController::class, 'save'])->name('posts.save');
+
+        // Chỉ admin và editor mới được tạo bài viết
+        //Route::get('/posts/edit/{id?}', Edit::class)->name('posts.edit');
+        Route::get('/posts/edit/{id?}', function ($id = null) {
+            return view('posts.edit', compact('id'));
+        })->name('posts.edit');
+        Route::get('/posts/{slug}', function ($slug) {
+            return view('posts.detail', compact('slug'));
+        })->name('posts.detail');
 
         // Chỉ admin được xoá bài viết
         Route::middleware(['admin'])->group(function () {

@@ -14,6 +14,12 @@
 
     <!-- Core CSS -->
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet">
+
+    <!-- Alpine JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Livewire Styles -->
+    @livewireStyles
 </head>
 
 <body>
@@ -68,7 +74,6 @@
                                         <p class="m-b-0 text-muted font-size-13">by Finance</p>
                                     </div>
                                 </div>
-                                <!-- Thêm file khác nếu cần -->
                             </div>
 
                             <div class="m-t-30">
@@ -169,6 +174,9 @@
 
     <!-- Core JS -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
+
+    <!-- Livewire Scripts -->
+    @livewireScripts
 </body>
 
 </html>
