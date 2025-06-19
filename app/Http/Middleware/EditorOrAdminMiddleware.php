@@ -10,13 +10,18 @@ use Symfony\Component\HttpFoundation\Response;
 class EditorOrAdminMiddleware
 {
     public function handle($request, Closure $next)
-    {
-        $user = Auth::user();
+{
+    $user = auth()->user();
+    $role = optional($user)->role;
 
-        if (!$user || !in_array($user->role, ['editor', 'admin'])) {
-            abort(403, 'Bạn không có quyền tạo bài viết.');
-        }
+    \Log::info('EditorOrAdminMiddleware: user=' . optional($user)->id . ', role=' . ($role?->value ?? 'null'));
 
-        return $next($request);
+    if (
+        !$user ||
+        !in_array($role?->value, ['admin', 'editor'])
+    ) {
+        abort(403, 'Bạn không có quyền tạo bài viết.');
     }
+    return $next($request);
+}
 }

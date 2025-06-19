@@ -4,8 +4,8 @@ namespace App\Livewire\Posts;
 
 use App\Models\Post;
 use Livewire\Component;
-use App\Utilities\FileUpload;
 use Livewire\WithFileUploads;
+use Livewire\TemporaryUploadedFile;
 use Illuminate\Support\Facades\Auth;
 
 class Edit extends Component
@@ -22,21 +22,52 @@ class Edit extends Component
 
     public function mount($id = null)
     {
+        $user = auth()->user();
+
         if ($id) {
-            $this->post = Post::findOrFail($id);
-            $this->title = $this->post->title;
-            $this->excerpt = $this->post->excerpt;
-            $this->content = $this->post->content;
-            $this->status = $this->post->status;
-            $this->imagePreview = $this->post->image;
+            $post = Post::findOrFail($id);
+
+            $role = $user && $user->role ? $user->role->value : null;
+            if ($role === 'admin') {
+                // Admin: always allow
+            } elseif ($role === 'editor' && $post->user_id === $user->id) {
+                // Editor: only allow if owns the post
+            } else {
+                abort(403, 'Bạn không có quyền sửa bài viết này.');
+            }
+
+            $this->post = $post;
+            $this->title = $post->title;
+            $this->excerpt = $post->excerpt;
+            $this->content = $post->content;
+            $this->status = $post->status;
+            $this->imagePreview = $post->image; // dùng khi không chọn ảnh mới
         } else {
             $this->post = new Post();
         }
     }
 
+    public function updatedImage()
+    {
+        logger('Uploaded image instance', ['image' => $this->image]);
+
+        if ($this->image instanceof TemporaryUploadedFile) {
+            $this->imagePreview = $this->image->temporaryUrl();
+        }
+    }
+
     public function save()
     {
+        $rules = [
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ];
+
+        $this->validate($rules);
+
         $user = Auth::user();
+
         if (!$this->post->id) {
             $this->post->user_id = $user->id;
         }
@@ -47,20 +78,14 @@ class Edit extends Component
         $this->post->status = $this->status;
 
         if ($this->image) {
-        $imageName = time() . '.' . $this->image->getClientOriginalExtension();
-        $this->image->storeAs('assets/uploads/posts', $imageName, 'public');
-
-        $this->post->image = 'assets/uploads/posts/' . $imageName;
-    }
+            $imageName = time() . '.' . $this->image->getClientOriginalExtension();
+            $this->image->storeAs('assets/uploads/posts', $imageName, 'public');
+            $this->post->image = 'assets/uploads/posts/' . $imageName;
+        }
 
         $this->post->save();
 
         return redirect()->route('posts.index')->with('success', 'Lưu thành công');
-    }
-
-    public function updatedImage()
-    {
-        $this->imagePreview = $this->image->temporaryUrl();
     }
 
     public function render()

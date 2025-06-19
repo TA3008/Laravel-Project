@@ -29,13 +29,8 @@ class Index extends Component
     {
         $post = Post::findOrFail($id);
 
-        if (Auth::id() !== $post->user_id && Auth::user()->role !== 'admin') {
-            $this->dispatchBrowserEvent('notify', ['type' => 'error', 'message' => 'Không có quyền xóa.']);
-            return;
-        }
-
         $post->delete();
-        $this->dispatchBrowserEvent('notify', ['type' => 'success', 'message' => 'Xóa bài viết thành công.']);
-        $this->emit('postDeleted');
+
+        $this->dispatch('post-deleted', ['message' => 'Đã xóa bài viết thành công!']);
     }
 }

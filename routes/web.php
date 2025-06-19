@@ -33,14 +33,14 @@ Route::middleware(['auth'])->group(function () {
         
 
         // Chỉ admin và editor mới được tạo bài viết
-        //Route::get('/posts/edit/{id?}', Edit::class)->name('posts.edit');
-        Route::get('/posts/edit/{id?}', function ($id = null) {
-            return view('posts.edit', compact('id'));
-        })->name('posts.edit');
-        Route::get('/posts/{slug}', function ($slug) {
-            return view('posts.detail', compact('slug'));
-        })->name('posts.detail');
-
+        Route::middleware(['editorOrAdmin'])->group(function () {
+            Route::get('/posts/edit/{id?}', function ($id = null) {
+                return view('posts.edit', compact('id'));
+            })->name('posts.edit');
+            Route::get('/posts/{slug}', function ($slug) {
+                return view('posts.detail', compact('slug'));
+            })->name('posts.detail');
+        });
         // Chỉ admin được xoá bài viết
         Route::middleware(['admin'])->group(function () {
             Route::delete('/posts/{id}', [PostController::class, 'delete'])->name('posts.delete');

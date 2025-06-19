@@ -1,4 +1,10 @@
 <div>
+    <div
+    x-data
+    x-on:post-deleted.window="alert($event.detail.message)"
+></div>
+
+<div>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Danh sách bài viết</h2>
     <div class="d-flex align-items-center" style="gap: 10px;">
@@ -31,7 +37,7 @@
                 </td>
                 <td>
                     @if ($post->image)
-                        <img src="{{ asset($post->image) }}" alt="Ảnh bài viết" style="max-width: 100px;">
+                        <img src="{{ asset('storage/' . $post->image) }}" alt="Ảnh bài viết" style="max-width: 100px;">
                     @else
                         <span class="text-muted">Không có ảnh</span>
                     @endif
@@ -42,12 +48,7 @@
                 <td>{{ $post->created_at->format('d/m/Y') }}</td>
                 <td>
                     <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                    <form action="{{ route('posts.delete', $post->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Xóa bài viết này?')">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger">Xóa</button>
-                </form>
-                    <!-- <button wire:click="confirmDelete({{ $post->id }})" class="btn btn-sm btn-danger">Xóa</button> -->
+                    <button wire:click="delete({{ $post->id }})" class="btn btn-sm btn-danger" onclick="return confirm('Xóa bài viết này?')">Xóa</button>
                 </td>
             </tr>
         @empty
