@@ -14,8 +14,6 @@ class EditorOrAdminMiddleware
     $user = auth()->user();
     $role = optional($user)->role;
 
-    \Log::info('EditorOrAdminMiddleware: user=' . optional($user)->id . ', role=' . ($role?->value ?? 'null'));
-
     if (
         !$user ||
         !in_array($role?->value, ['admin', 'editor'])

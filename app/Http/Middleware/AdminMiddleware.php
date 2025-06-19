@@ -10,10 +10,15 @@ class AdminMiddleware
 {
     public function handle($request, Closure $next)
 {
-    if (!auth()->check() || auth()->user()->role !== 'admin') {
+    $user = auth()->user();
+    $role = optional($user)->role;
+
+    if (
+        !$user ||
+        !in_array($role?->value, ['admin'])
+    ) {
         abort(403, 'Bạn không có quyền truy cập.');
     }
-
     return $next($request);
 }
 }
