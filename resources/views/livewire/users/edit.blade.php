@@ -1,4 +1,6 @@
 <div class="container">
+    <!-- breadcrumb -->
+ <livewire:components.breadcrumb :items="$breadcrumbItems" />
     <h2>Cập nhật quyền người dùng</h2>
 
     <form wire:submit.prevent="save">

@@ -9,20 +9,25 @@ use Illuminate\Support\Facades\Auth;
 class Index extends Component
 {
     public $keyword = '';
+    public $breadcrumbItems = [];
 
-    protected $listeners = ['postDeleted' => '$refresh'];
+    protected $listeners = ['postDeleted' => '$refresh', 'searchUpdated' => 'onSearchUpdated',];
 
     public function render()
     {
         $query = Post::with('user')->latest();
 
-        if ($this->keyword) {
-            $query->where('title', 'ILIKE', '%' . $this->keyword . '%');
-        }
-
-        $posts = $query->get();
+        $posts = Post::query()
+                ->when($this->keyword, function ($query) {
+                    $query->where('title', 'like', '%' . $this->keyword . '%');
+                })
+                ->paginate(12);
 
         return view('livewire.posts.index', compact('posts'));
+    }
+    public function onSearchUpdated($keyword) 
+    {
+        $this->keyword = $keyword;
     }
 
     public function delete($id)

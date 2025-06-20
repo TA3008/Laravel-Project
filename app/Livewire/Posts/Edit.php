@@ -13,12 +13,15 @@ class Edit extends Component
     use WithFileUploads;
 
     public $post;
+    public $id;
     public $title;
     public $excerpt;
     public $content;
     public $status = 'draft';
     public $image;
     public $imagePreview;
+
+    public $breadcrumbItems = [];
 
     public function mount($id = null)
     {
@@ -36,6 +39,17 @@ class Edit extends Component
                 abort(403, 'Bạn không có quyền sửa bài viết này.');
             }
 
+            $this->breadcrumbItems = [
+    [
+        'label' => 'Bài viết',
+        'url' => route('posts.index'),
+    ],
+    [
+        'label' => $post->title,
+        'url' => '',
+    ],
+];
+
             $this->post = $post;
             $this->title = $post->title;
             $this->excerpt = $post->excerpt;
@@ -45,6 +59,7 @@ class Edit extends Component
         } else {
             $this->post = new Post();
         }
+
     }
 
     public function updatedImage()

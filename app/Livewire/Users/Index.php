@@ -7,15 +7,17 @@ use Livewire\Component;
 
 class Index extends Component
 {
+    public $breadcrumbItems = [];
+    
     public function render()
     {
-        $users = User::all();
+        $users = User::latest()->paginate(12);
         return view('livewire.users.index', compact('users'));
     }
 
     public function delete($id)
     {
-        $user = Users::findOrFail($id);
+        $user = User::findOrFail($id);
 
         $user->delete();
 

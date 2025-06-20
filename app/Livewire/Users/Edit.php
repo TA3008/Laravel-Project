@@ -11,6 +11,8 @@ class Edit extends Component
     public User $user;
     public string $role;
 
+    public $breadcrumbItems = [];
+
     public function mount($id)
     {
         $this->user = User::findOrFail($id);

@@ -175,6 +175,10 @@
     <!-- Core JS -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
 
+    <!-- TinyMCE JS -->
+    <script src="https://cdn.tiny.cloud/1/q067kmptog56kbxw1h86mc871k4f3ytfic0ss5aljlu5ueea/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+
     <!-- Livewire Scripts -->
     @livewireScripts
 </body>

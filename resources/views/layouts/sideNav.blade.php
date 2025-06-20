@@ -12,7 +12,7 @@
                         <li class="nav-item">
                             <a href="{{ route('users.index') }}">
                                 <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
+                                    <i class="fas fa-user"></i>
                                 </span>
                                 <span class="title">User</span>
                             </a>
@@ -20,7 +20,7 @@
                         <li class="nav-item">
                             <a href="{{ route('posts.index') }}">
                                 <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
+                                    <i class="fas fa-book-open"></i>
                                 </span>
                                 <span class="title">Post</span>
                             </a>

@@ -1,15 +1,23 @@
 <div>
+    <!-- message -->
     <div
     x-data
     x-on:post-deleted.window="alert($event.detail.message)"
 ></div>
 
+<!-- breadcrumb -->
+ <livewire:components.breadcrumb :items="$breadcrumbItems" />
+ 
 <div>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Danh sách bài viết</h2>
     <div class="d-flex align-items-center" style="gap: 10px;">
         <div style="max-width: 300px;">
-            <input type="text" wire:model.debounce.500ms="keyword" class="form-control me-2" placeholder="Tìm tiêu đề...">
+            <livewire:components.search-box 
+                :keyword="$keyword"
+                wire:keydown.enter="$refresh"
+                wire:search-updated="onSearchUpdated"
+            />
         </div>
         <a href="{{ route('posts.edit') }}" class="btn btn-primary">Thêm mới</a>
     </div>
@@ -58,4 +66,8 @@
         @endforelse
     </tbody>
 </table>
+<!-- pagination -->
+@include('livewire.components.pagination-controls', ['paginator' => $posts])
+
+
 </div>

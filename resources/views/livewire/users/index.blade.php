@@ -1,4 +1,7 @@
 <div>
+    <!-- breadcrumb -->
+ <livewire:components.breadcrumb :items="$breadcrumbItems" />
+ 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Danh sách người dùng</h2>
     </div>
@@ -35,4 +38,6 @@
 </tbody>
 
     </table>
+    <!-- pagination -->
+@include('livewire.components.pagination-controls', ['paginator' => $users])
 </div>
