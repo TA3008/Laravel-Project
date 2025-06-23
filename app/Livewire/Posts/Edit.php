@@ -4,6 +4,8 @@ namespace App\Livewire\Posts;
 
 use App\Models\Post;
 use Livewire\Component;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Livewire\TemporaryUploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +22,14 @@ class Edit extends Component
     public $status = 'draft';
     public $image;
     public $imagePreview;
-
+    public $allCategories = [];
+    public $selectedCategories = [];
     public $breadcrumbItems = [];
 
     public function mount($id = null)
     {
         $user = auth()->user();
+        $this->allCategories = Category::all();
 
         if ($id) {
             $post = Post::findOrFail($id);
@@ -40,15 +44,15 @@ class Edit extends Component
             }
 
             $this->breadcrumbItems = [
-    [
-        'label' => 'Bài viết',
-        'url' => route('posts.index'),
-    ],
-    [
-        'label' => $post->title,
-        'url' => '',
-    ],
-];
+                [
+                    'label' => 'Bài viết',
+                    'url' => route('posts.index'),
+                ],
+                [
+                    'label' => $post->title,
+                    'url' => '',
+                ],
+            ];
 
             $this->post = $post;
             $this->title = $post->title;
@@ -56,6 +60,7 @@ class Edit extends Component
             $this->content = $post->content;
             $this->status = $post->status;
             $this->imagePreview = $post->image; // dùng khi không chọn ảnh mới
+            $this->selectedCategories = $post->categories()->pluck('id')->toArray();
         } else {
             $this->post = new Post();
         }
@@ -91,7 +96,15 @@ class Edit extends Component
         $this->post->excerpt = $this->excerpt;
         $this->post->content = $this->content;
         $this->post->status = $this->status;
+        
+        // Update slug only if it's a new post or title has changed
+        $isNew = !$this->post->exists;
+        $this->post->slug = $this->post->slug ?: Str::slug($$this->title);
+        if ($isNew || $this->title !== $this->post->getOriginal('title')) {
+            $this->post->slug = Str::slug($this->title);
+        }
 
+        // Handle image upload
         if ($this->image) {
             $imageName = time() . '.' . $this->image->getClientOriginalExtension();
             $this->image->storeAs('assets/uploads/posts', $imageName, 'public');
@@ -99,6 +112,7 @@ class Edit extends Component
         }
 
         $this->post->save();
+        $this->post->categories()->sync($this->selectedCategories);
 
         return redirect()->route('posts.index')->with('success', 'Lưu thành công');
     }

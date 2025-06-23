@@ -28,18 +28,22 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
         // Gen Slug từ Title
-        static::creating(function ($post) {
+        static::saving(function ($post) {
             if (empty($post->slug)) {
                 $post->slug = Str::slug($post->title);
             }
 
-            // Nếu không có status thì set mặc định là draft
             if (empty($post->status)) {
-                $post->status = PostENum::DRAFT;
+                $post->status = PostEnum::DRAFT;
             }
         });
     }

@@ -13,6 +13,7 @@
                 <th>Tên</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Trạng thái</th>
                 <th>Ngày tạo</th>
                 <th>Hành động</th>
             </tr>
@@ -24,6 +25,7 @@
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ ucfirst($user->role->value) }}</td>
+            <td>{{ $user->status }}</td>
             <td>{{ $user->created_at->format('d/m/Y') }}</td>
             <td>
                     <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Sửa</a>

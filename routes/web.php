@@ -14,12 +14,22 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
      Route::get('/', fn() => redirect()->route('posts.index'));
 
+     Route::get('/home', fn() => redirect()->route('home'));
+
     // User
     Route::middleware(['admin'])->group(function () {
         Route::get('/users', fn () => view('users.index'))->name('users.index');
         Route::get('/users/edit/{id?}', function ($id = null) {
             return view('users.edit', compact('id'));
         })->name('users.edit');
+    });
+
+    // Category
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/categories', fn () => view('categories.index'))->name('categories.index');
+        Route::get('/categories/edit/{id?}', function ($id = null) {
+            return view('categories.edit', compact('id'));
+        })->name('categories.edit');
     });
 
     // Post

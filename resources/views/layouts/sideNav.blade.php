@@ -25,6 +25,14 @@
                                 <span class="title">Post</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('categories.index') }}">
+                                <span class="icon-holder">
+                                    <i class="fas fa-th-list"></i>
+                                </span>
+                                <span class="title">Category</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

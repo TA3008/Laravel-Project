@@ -13,11 +13,7 @@
     <h2>Danh sách bài viết</h2>
     <div class="d-flex align-items-center" style="gap: 10px;">
         <div style="max-width: 300px;">
-            <livewire:components.search-box 
-                :keyword="$keyword"
-                wire:keydown.enter="$refresh"
-                wire:search-updated="onSearchUpdated"
-            />
+            <livewire:components.search-box :keyword="$keyword" />
         </div>
         <a href="{{ route('posts.edit') }}" class="btn btn-primary">Thêm mới</a>
     </div>
@@ -30,6 +26,7 @@
             <th>Tên bài viết</th>
             <th>Ảnh</th>
             <th>Tóm tắt</th>
+            <th>Danh mục</th>
             <th>Trạng thái</th>
             <th>Người tạo</th>
             <th>Ngày tạo</th>
@@ -51,6 +48,17 @@
                     @endif
                 </td>
                 <td>{{ $post->excerpt }}</td>
+                <td>
+                    @if ($post->categories->isNotEmpty())
+                        <ul class="list-unstyled mb-0">
+                            @foreach ($post->categories as $category)
+                                <li class="badge bg-secondary me-1">{{ $category->name }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <span class="text-muted">Không có danh mục</span>
+                    @endif
+                </td>
                 <td>{{ $post->status }}</td>
                 <td>{{ $post->user->name ?? 'Không xác định' }}</td>
                 <td>{{ $post->created_at->format('d/m/Y') }}</td>
