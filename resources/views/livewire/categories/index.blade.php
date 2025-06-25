@@ -10,7 +10,7 @@
             <h2>Danh sách danh mục</h2>
             <div class="d-flex align-items-center" style="gap: 10px;">
 
-                <!-- Search box (nếu có) -->
+                <!-- Search box -->
                 <div style="max-width: 300px;">
                     <livewire:components.search-box :keyword="$keyword" />
                 </div>

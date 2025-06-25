@@ -4,15 +4,39 @@ namespace App\Livewire\Users;
 
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+
+    public $keyword = '';
     public $breadcrumbItems = [];
+
+    protected $listeners = [
+        'searchUpdated' => 'onSearchUpdated',
+    ];
     
     public function render()
+{
+    $query = User::query();
+
+    if ($this->keyword) {
+        $query->where(function ($q) {
+            $q->where('name', 'like', '%' . $this->keyword . '%')
+                ->orWhere('email', 'like', '%' . $this->keyword . '%');
+        });
+    }
+
+    $users = $query->latest()->paginate(12);
+
+    return view('livewire.users.index', compact('users'));
+}
+
+    public function onSearchUpdated($keyword)
     {
-        $users = User::latest()->paginate(12);
-        return view('livewire.users.index', compact('users'));
+        $this->keyword = $keyword;
+        $this->resetPage();
     }
 
     public function delete($id)

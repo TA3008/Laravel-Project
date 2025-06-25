@@ -15,6 +15,9 @@ class Index extends Component
     public $categoryId = null;
     public $breadcrumbItems = [];
 
+    public $editingPostId = null;
+    public $showEditModal = false;
+
     protected $listeners = [
         'postDeleted' => '$refresh', 
         'searchUpdated' => 'onSearchUpdated',
@@ -32,7 +35,7 @@ class Index extends Component
                 )
             )
             ->latest()
-            ->paginate(12);
+            ->paginate(1);
 
         return view('livewire.posts.index', compact('posts'));
     }
@@ -45,6 +48,13 @@ class Index extends Component
     public function updatingCategoryId()
     {
         $this->resetPage();
+    }
+
+    
+    public function edit($id)
+    {
+        $this->editingPostId = $id;
+        $this->showEditModal = true;
     }
 
     public function delete($id)

@@ -1,4 +1,7 @@
 <div>
+    <!-- Event trigger -->
+    <div x-data x-on:post-deleted.window="alert($event.detail.message)"></div>
+    
     <!-- breadcrumb -->
  <livewire:components.breadcrumb :items="$breadcrumbItems" />
  
@@ -6,6 +9,11 @@
         <h2>Danh sách người dùng</h2>
     </div>
 
+    <!-- Search box -->
+                <div style="max-width: 300px;">
+                    <livewire:components.search-box :keyword="$keyword" />
+                </div>
+                
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
             <tr>

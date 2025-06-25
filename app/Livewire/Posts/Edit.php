@@ -114,7 +114,9 @@ class Edit extends Component
         $this->post->save();
         $this->post->categories()->sync($this->selectedCategories);
 
-        return redirect()->route('posts.index')->with('success', 'Lưu thành công');
+        if ($this->redirectToIndex ?? true) {
+            return redirect()->route('posts.index')->with('success', 'Lưu thành công');
+        }
     }
 
     public function render()

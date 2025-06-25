@@ -1,15 +1,12 @@
 <?php
 
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 
 // Login & Register
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
+Route::get('/login', Login::class)->name('login');
+Route::get('/register', Register::class)->name('register');
 
 Route::middleware(['auth'])->group(function () {
      Route::get('/', fn() => redirect()->route('posts.index'));

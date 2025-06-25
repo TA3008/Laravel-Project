@@ -14,6 +14,10 @@ class Index extends Component
     public $breadcrumbItems = [];
     protected $queryString = ['keyword'];
 
+    protected $listeners = [
+        'searchUpdated' => 'onSearchUpdated',
+    ];
+
     public function render()
     {
         $query = Category::query()
@@ -28,12 +32,18 @@ class Index extends Component
         return view('livewire.categories.index', compact('categories'));
     }
 
+    public function onSearchUpdated($keyword)
+    {
+        $this->keyword = $keyword;
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         $category = Category::findOrFail($id);
         $category->delete();
 
-        $this->dispatchBrowserEvent('categories-deleted', [
+        $this->dispatch('categories-deleted', [
             'message' => 'Đã xóa danh mục thành công!'
         ]);
     }

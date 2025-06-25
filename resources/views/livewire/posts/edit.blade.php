@@ -1,5 +1,6 @@
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl shadow-lg relative">
+<div class="w-full">
+<div class="fixed inset-0 z-50 bg-white dark:bg-gray-800 overflow-y-auto p-4">
+    <div class="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg relative">
 
         <!-- Nút đóng -->
         <button 
@@ -109,4 +110,5 @@
         @endpush
 
     </div>
+</div>
 </div>
