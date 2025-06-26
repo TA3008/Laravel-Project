@@ -1,6 +1,6 @@
 <div>
     <!-- Event trigger -->
-    <div x-data x-on:post-deleted.window="alert($event.detail.message)"></div>
+    <div x-data x-on:user-deleted.window="alert($event.detail.message)"></div>
     
     <!-- breadcrumb -->
  <livewire:components.breadcrumb :items="$breadcrumbItems" />
@@ -36,8 +36,8 @@
             <td>{{ $user->status }}</td>
             <td>{{ $user->created_at->format('d/m/Y') }}</td>
             <td>
-                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Sửa</a>
-                    <button wire:click="delete({{ $user->id }})" class="btn btn-sm btn-danger" onclick="return confirm('Xóa bài viết này?')">Xóa</button>
+                    <button class="btn btn-sm btn-warning" wire:click="edit({{ $user->id }})">Sửa</button>
+                    <button wire:click="delete({{ $user->id }})" class="btn btn-sm btn-danger" onclick="return confirm('Xóa người dùng này?')">Xóa</button>
             </td>
         </tr>
     @empty
@@ -50,4 +50,29 @@
     </table>
     <!-- pagination -->
 @include('livewire.components.pagination-controls', ['paginator' => $users])
-</div>
+
+
+@if ($showEditModal)
+    <div class="custom-modal-backdrop"></div>
+
+    <div class="custom-modal-wrapper">
+        <div class="custom-modal">
+            <!-- Header -->
+            <div class="custom-modal-header">
+                <h5 class="modal-title mb-0">Chỉnh sửa người dùng</h5>
+                <button type="button" class="btn-close" wire:click="$set('showEditModal', false)">&times;</button>
+            </div>
+
+            <!-- Body -->
+            <div class="custom-modal-body">
+                <livewire:users.edit :id="$editingUserId" wire:key="edit-user-{{ $editingUserId ?? 'new' }}" />
+            </div>
+
+            <!-- Footer -->
+            <!-- <div class="custom-modal-footer text-end">
+                <button class="btn btn-secondary" wire:click="$set('showEditModal', false)">Đóng</button>
+            </div> -->
+        </div>
+    </div>
+@endif
+

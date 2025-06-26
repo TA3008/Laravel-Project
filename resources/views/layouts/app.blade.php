@@ -175,13 +175,61 @@
     <!-- Core JS -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
 
-    <!-- TinyMCE JS -->
-    <script src="https://cdn.tiny.cloud/1/q067kmptog56kbxw1h86mc871k4f3ytfic0ss5aljlu5ueea/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-
-
     <!-- Livewire Scripts -->
     @livewireScripts
     @stack('scripts')
+
+    <!-- TinyMCE JS -->
+<script src="https://cdn.tiny.cloud/1/q067kmptog56kbxw1h86mc871k4f3ytfic0ss5aljlu5ueea/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    window.initTinyMCE = function () {
+        const textarea = document.querySelector('#content-editor');
+
+        if (!textarea) {
+            console.warn('⚠️ Không tìm thấy textarea');
+            return;
+        }
+
+        if (tinymce.get('content-editor')) {
+            console.log('⏩ TinyMCE đã tồn tại');
+            return;
+        }
+
+        console.log('✅ TinyMCE initializing');
+
+        tinymce.init({
+            target: textarea,
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            setup(editor) {
+                const updateLivewireContent = () => {
+                    const componentRoot = textarea.closest('[wire\\:id]');
+                    const componentId = componentRoot?.getAttribute('wire:id');
+
+                    if (window.Livewire && componentId) {
+                        const content = editor.getContent();
+                        const livewireComponent = Livewire.find(componentId);
+
+                        if (livewireComponent) {
+                            console.log('🔁 Đẩy nội dung về Livewire:', content);
+                            livewireComponent.set('content', content);
+                        }
+                    }
+                };
+
+                editor.on('Change', updateLivewireContent);
+                editor.on('KeyUp', updateLivewireContent);
+                editor.on('init', () => {
+                    console.log('✅ TinyMCE init hoàn tất');
+                    updateLivewireContent();
+                });
+            }
+        });
+    };
+</script>
+
+
+
 </body>
 
 </html>

@@ -16,7 +16,8 @@
                 </div>
 
                 <!-- Nút thêm -->
-                <a href="{{ route('categories.edit') }}" class="btn btn-primary">Thêm mới</a>
+                <a href="#" wire:click="create" class="btn btn-primary">Thêm mới</a>
+
             </div>
         </div>
 
@@ -43,7 +44,8 @@
                         <td>{{ $category->status }}</td>
                         <td>{{ $category->created_at->format('d/m/Y') }}</td>
                         <td>
-                            <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                            <button wire:click="edit({{ $category->id }})" class="btn btn-sm btn-warning">Sửa</button>
+
                             <button wire:click="delete({{ $category->id }})" class="btn btn-sm btn-danger" onclick="return confirm('Xóa danh mục này?')">Xóa</button>
                         </td>
                     </tr>
@@ -57,5 +59,30 @@
 
         <!-- Pagination -->
         @include('livewire.components.pagination-controls', ['paginator' => $categories])
+
+
+    <!-- Modal -->
+@if ($showEditModal)
+    <div class="custom-modal-backdrop"></div>
+
+    <div class="custom-modal-wrapper">
+        <div class="custom-modal">
+            <!-- Header -->
+            <div class="custom-modal-header">
+                <h5 class="modal-title mb-0">Chỉnh sửa danh mục</h5>
+                <button type="button" class="btn-close" wire:click="$set('showEditModal', false)">&times;</button>
+            </div>
+
+            <!-- Body -->
+            <div class="custom-modal-body">
+                <livewire:categories.edit :id="$editingCategoryId" wire:key="edit-category-{{ $editingCategoryId ?? 'new' }}" />
+            </div>
+
+            <!-- Footer -->
+            <!-- <div class="custom-modal-footer text-end">
+                <button class="btn btn-secondary" wire:click="$set('showEditModal', false)">Đóng</button>
+            </div> -->
+        </div>
     </div>
-</div>
+@endif
+

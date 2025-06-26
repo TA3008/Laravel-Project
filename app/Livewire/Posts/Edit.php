@@ -80,7 +80,6 @@ class Edit extends Component
     {
         $rules = [
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
 
@@ -96,13 +95,7 @@ class Edit extends Component
         $this->post->excerpt = $this->excerpt;
         $this->post->content = $this->content;
         $this->post->status = $this->status;
-        
-        // Update slug only if it's a new post or title has changed
-        $isNew = !$this->post->exists;
-        $this->post->slug = $this->post->slug ?: Str::slug($$this->title);
-        if ($isNew || $this->title !== $this->post->getOriginal('title')) {
-            $this->post->slug = Str::slug($this->title);
-        }
+    
 
         // Handle image upload
         if ($this->image) {

@@ -62,7 +62,6 @@ class Edit extends Component
 
         $data = [
             'name' => $this->name,
-            'slug' => $nameChanged ? Str::slug($this->name) : $this->slug, // Nếu tên đã thay đổi, tự động tạo slug
             'status' => $this->status,
         ];
 
@@ -72,14 +71,19 @@ class Edit extends Component
             $this->category = Category::create($data);
         }
 
-        return redirect()->route('categories.index')->with('success', 'Lưu danh mục thành công!');
+        $this->dispatch('close-edit-modal');
+        $this->dispatch('categoryUpdated')->to('categories.index');
+    }
+
+    public function handleCloseModal()
+    {
+        $this->showEditModal = false;
     }
 
     public function render()
     {
         return view('livewire.categories.edit', [
             'statusOptions' => StatusEnum::options(),
-            'breadcrumbItems' => $this->breadcrumbItems,
         ]);
     }
 }

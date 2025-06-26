@@ -14,8 +14,13 @@ class Index extends Component
     public $breadcrumbItems = [];
     protected $queryString = ['keyword'];
 
+    public $showEditModal = false;
+    public $editingCategoryId = null;
+
     protected $listeners = [
         'searchUpdated' => 'onSearchUpdated',
+        'close-edit-modal' => 'closeEditModal',
+        'categories-deleted' => '$refresh'
     ];
 
     public function render()
@@ -38,6 +43,19 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function edit($id)
+    {
+        logger('Đang mở modal chỉnh sửa danh mục', ['id' => $id]);
+        $this->editingCategoryId = $id;
+        $this->showEditModal = true;
+    }
+
+    public function create()
+    {
+        $this->editingCategoryId = null;
+        $this->showEditModal = true;
+    }
+
     public function delete($id)
     {
         $category = Category::findOrFail($id);
@@ -46,5 +64,10 @@ class Index extends Component
         $this->dispatch('categories-deleted', [
             'message' => 'Đã xóa danh mục thành công!'
         ]);
+    }
+
+    public function closeEditModal()
+    {
+        $this->showEditModal = false;
     }
 }

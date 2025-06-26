@@ -77,7 +77,7 @@
     @include('livewire.components.pagination-controls', ['paginator' => $posts])
 
     <!-- Modal -->
-@if ($showEditModal && $editingPostId)
+@if ($showEditModal)
     <div class="custom-modal-backdrop"></div>
 
     <div class="custom-modal-wrapper">
@@ -90,17 +90,13 @@
 
             <!-- Body -->
             <div class="custom-modal-body">
-                @if ($editingPostId)
-                    <livewire:posts.edit :id="$editingPostId" wire:key="edit-post-{{ $editingPostId }}" />
-                @else
-                    <p class="text-danger">Không có nội dung để hiển thị.</p>
-                @endif
+                <livewire:posts.edit :id="$editingPostId" wire:key="edit-post-{{ $editingPostId ?? 'new' }}" />
             </div>
 
             <!-- Footer -->
-            <div class="custom-modal-footer text-end">
+            <!-- <div class="custom-modal-footer text-end">
                 <button class="btn btn-secondary" wire:click="$set('showEditModal', false)">Đóng</button>
-            </div>
+            </div> -->
         </div>
     </div>
 @endif

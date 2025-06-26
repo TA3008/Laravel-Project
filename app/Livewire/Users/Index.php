@@ -13,8 +13,13 @@ class Index extends Component
     public $keyword = '';
     public $breadcrumbItems = [];
 
+    public $editingUserId = null;
+    public $showEditModal = false;
+
     protected $listeners = [
         'searchUpdated' => 'onSearchUpdated',
+        'close-edit-modal' => 'closeEditModal',
+        'user-deleted' => '$refresh'
     ];
     
     public function render()
@@ -37,6 +42,18 @@ class Index extends Component
     {
         $this->keyword = $keyword;
         $this->resetPage();
+    }
+
+    public function create()
+    {
+        $this->editingUserId = null; 
+        $this->showEditModal = true;
+    }
+
+    public function edit($id)
+    {
+        $this->editingUserId = $id;
+        $this->showEditModal = true;
     }
 
     public function delete($id)

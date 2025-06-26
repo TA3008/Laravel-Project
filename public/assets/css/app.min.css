@@ -29364,6 +29364,10 @@ div.is-invalid {
     margin-left: 0 !important;
 }
 
+nav[role="navigation"] svg {
+    display: none !important;
+}
+
 /* Fullscreen modal backdrop */
 .custom-modal-backdrop {
     position: fixed;
@@ -29432,3 +29436,24 @@ div.is-invalid {
     color: #000;
     cursor: pointer;
 }
+
+/* pagination */
+.custom-single-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-circle {
+    background-color: #4285f4; /* màu xanh giống ảnh */
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+

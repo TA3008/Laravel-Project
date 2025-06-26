@@ -32,14 +32,14 @@ Route::middleware(['auth'])->group(function () {
     // Post
     // Tất cả roles đều được xem danh sách bài viết
     Route::get('/posts', fn () => view('posts.index'))->name('posts.index');
+    Route::get('/posts/{slug}', function ($slug) {
+            return view('posts.detail', compact('slug'));
+        })->name('posts.detail');
 
     // Chỉ admin và editor mới được tạo bài viết
     Route::middleware(['editorOrAdmin'])->group(function () {
         Route::get('/posts/edit/{id?}', function ($id = null) {
             return view('posts.edit', compact('id'));
         })->name('posts.edit');
-        Route::get('/posts/{slug}', function ($slug) {
-            return view('posts.detail', compact('slug'));
-        })->name('posts.detail');
     });
 });

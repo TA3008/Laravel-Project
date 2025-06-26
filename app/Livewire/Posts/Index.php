@@ -21,6 +21,7 @@ class Index extends Component
     protected $listeners = [
         'postDeleted' => '$refresh', 
         'searchUpdated' => 'onSearchUpdated',
+        'close-edit-modal' => 'closeEditModal',
     ];
 
     public function render()
@@ -50,7 +51,12 @@ class Index extends Component
         $this->resetPage();
     }
 
-    
+    public function create()
+    {
+        $this->editingPostId = null; 
+        $this->showEditModal = true;
+    }
+
     public function edit($id)
     {
         $this->editingPostId = $id;
@@ -64,5 +70,10 @@ class Index extends Component
         $post->delete();
 
         $this->dispatch('post-deleted', ['message' => 'Đã xóa bài viết thành công!']);
+    }
+
+    public function closeEditModal()
+    {
+        $this->showEditModal = false;
     }
 }

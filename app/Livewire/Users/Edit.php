@@ -11,6 +11,7 @@ class Edit extends Component
 {
     public User $user;
     public string $role;
+    public string $status;
 
     public $breadcrumbItems = [];
 

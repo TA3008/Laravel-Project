@@ -11,6 +11,7 @@
         @endif
 
         <div class="mt-4">
-            {!! nl2br(e($post->content)) !!}
+            {!! $post->content !!}
+
         </div>
     </div>
